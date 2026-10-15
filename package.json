@@ -1,1 +1,27 @@
-{"name":"dodoo-planner","private":true,"version":"1.0.0","type":"module","scripts":{"dev":"vite --host 0.0.0.0","build":"tsc -b && vite build","preview":"vite preview","deploy:cloudflare":"npm run build && npx wrangler pages deploy dist --project-name dodoo-planner"},"dependencies":{"@supabase/supabase-js":"^2.57.0","react":"^19.1.1","react-dom":"^19.1.1"},"devDependencies":{"@types/react":"^19.1.12","@types/react-dom":"^19.1.9","@vitejs/plugin-react":"^5.0.2","typescript":"~5.8.3","vite":"^7.1.7","wrangler":"^4.45.0"}}
+{
+  "name": "dodoo-planner",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "tsc -b && vite build",
+    "preview": "npm run build && wrangler dev",
+    "deploy:cloudflare": "npm run build && npx wrangler pages deploy dist --project-name dodoo-planner",
+    "deploy": "npm run build && wrangler deploy"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.57.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.64.0",
+    "@types/react": "^19.1.12",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.2",
+    "typescript": "~5.8.3",
+    "vite": "^7.1.7",
+    "wrangler": "^4.151.0"
+  }
+}
