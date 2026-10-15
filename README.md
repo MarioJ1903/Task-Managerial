@@ -6,20 +6,21 @@
 
 1. Install Node.js 20.19+ (Vite 7 requirement).
 2. Run `npm install`, then `npm run dev`.
-3. To enable remote persistence, copy `.env.example` to `.env.local`, set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`, enable Anonymous Sign-Ins in Supabase Auth, and apply `supabase/migrations/202610150001_dodoo.sql`.
-4. Run `npm run build` for the production bundle; `npm run preview` serves it locally.
+3. Copy `.env.example` to `.env.local`, set `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY`, and apply `supabase/migrations/202610150001_dodoo.sql`.
+4. Users must create an account or sign in with email and password. Email confirmation and password recovery require working Auth email delivery; configure custom SMTP in Supabase for users outside your project team.
+5. Run `npm run build` for the production bundle; `npm run preview` serves it locally.
 
-## Cloudflare Pages
+## Cloudflare Workers
 
-The GitHub Actions workflow at `.github/workflows/cloudflare-pages.yml` builds and deploys the static Vite output to the Cloudflare Pages project `dodoo-planner` on pushes to `main`. Create that Pages project in the Cloudflare dashboard (or run `npx wrangler pages project create dodoo-planner --production-branch main` after authenticating Wrangler), then add these GitHub Actions repository secrets:
+Run `npm run deploy` after authenticating Wrangler to publish the Vite assets and Worker. GitHub Actions also deploys on pushes to `main`; configure these repository secrets:
 
-- `CLOUDFLARE_API_TOKEN` — token with Cloudflare Pages edit permission.
+- `CLOUDFLARE_API_TOKEN` — token with permission to deploy Workers and assets.
 - `CLOUDFLARE_ACCOUNT_ID` — Cloudflare account ID.
-- `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` — the public Supabase project URL and anon/publishable key.
+- `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` — the public Supabase project URL and publishable key.
 
-The Vite variables are public client configuration; enforce access with Supabase RLS. Do not add a service-role key or email-provider key to the Pages build.
+The Vite variables are public client configuration; enforce access with Supabase RLS. Do not add a service-role key or email-provider key to the Worker build.
 
-Tasks and preferences are stored in IndexedDB on the current browser. With Supabase configured, the app creates an anonymous Auth session and upserts tasks to the `tasks` table under that user ID. The UI distinguishes local-only state from a confirmed sync. RLS policies scope rows and private attachment objects by `auth.uid()`. Never put service-role or email-provider keys in Vite environment variables.
+Users must authenticate before the planner is shown. Tasks sync to the `tasks` table under the signed-in user's ID; profiles and preferences use `profiles`. Per-account IndexedDB caches support local continuity. Supabase RLS scopes rows and private attachment objects by `auth.uid()`. Never put service-role or email-provider keys in Vite environment variables.
 
 ## Included
 
@@ -31,9 +32,9 @@ Tasks and preferences are stored in IndexedDB on the current browser. With Supab
 
 ## Supabase and production configuration
 
-Apply the migration in the Supabase SQL editor or via Supabase CLI. It creates `profiles`, `tasks`, and `task_attachments`, enables RLS, creates ownership policies, and provisions a private 5 MB `task-attachments` bucket. Anonymous sign-in must be enabled in the project. The app will remain usable locally if configuration is absent or remote sync fails.
+Apply the migration in the Supabase SQL editor or via Supabase CLI. It creates `profiles`, `tasks`, and `task_attachments`, enables RLS, creates ownership policies, and provisions a private 5 MB `task-attachments` bucket. Email/password sign-ups and logins are enabled; anonymous sign-in is not needed by the app.
 
-Account linking, verified-email recovery, persistent cross-device attachment upload, email reminders, and a reminder scheduler are not configured in this MVP. Local attachment previews use browser object URLs and are session-local; don't treat them as durable backups. Browser reminders are permission-gated and only reliable while the app can run. Configure any email sender in a server-side Edge Function with provider secrets and a scheduled job; never expose those secrets to the browser. Account linking must use Supabase's supported identity-linking flow and preserve the anonymous user ID.
+Password reset and password changes are supported through Supabase Auth. Custom SMTP must be configured for reliable email verification and password recovery. Persistent cross-device attachment upload, email reminders, and a reminder scheduler are not configured in this MVP. Attachment previews remain local to the account's browser; don't treat them as durable backups. Browser reminders are permission-gated and only reliable while the app can run.
 
 Deploy the Vite `dist` output to Vercel or Netlify and configure the same two public Supabase variables. Add a catch-all rewrite to `/index.html` if deploying with client-side routes in the future. Do not commit `.env` files.
 

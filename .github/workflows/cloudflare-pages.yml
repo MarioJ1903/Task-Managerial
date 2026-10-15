@@ -1,4 +1,4 @@
-name: Deploy Dodoo to Cloudflare Pages
+name: Deploy Dodoo to Cloudflare Workers
 
 on:
   push:
@@ -20,9 +20,9 @@ jobs:
       - run: npm run build
         env:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-      - name: Deploy to Cloudflare Pages
-        run: npx wrangler pages deploy dist --project-name dodoo-planner --branch main
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+      - name: Deploy to Cloudflare Workers
+        run: npx wrangler deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
