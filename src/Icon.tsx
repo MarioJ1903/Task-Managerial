@@ -1,6 +1,6 @@
 import type { ReactNode, SVGProps } from 'react';
 
-type IconName = 'calendar'|'week'|'focus'|'palette'|'settings'|'check'|'clock'|'sparkles'|'search'|'share'|'plus'|'coffee'|'note'|'cloud'|'sun'|'moon'|'monitor'|'bell'|'download'|'external'|'paperclip'|'chevronLeft'|'chevronRight'|'rotate'|'close'|'play'|'pause';
+type IconName = 'calendar'|'week'|'focus'|'palette'|'settings'|'check'|'clock'|'sparkles'|'search'|'share'|'plus'|'coffee'|'note'|'cloud'|'sun'|'moon'|'monitor'|'bell'|'download'|'external'|'paperclip'|'chevronLeft'|'chevronRight'|'rotate'|'close'|'play'|'pause'|'moreHorizontal';
 
 const paths: Record<IconName, ReactNode> = {
   calendar: <><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/><path d="m9 15 2 2 4-4"/></>,
@@ -30,6 +30,7 @@ const paths: Record<IconName, ReactNode> = {
   close: <path d="m18 6-12 12M6 6l12 12"/>,
   play: <path d="m8 5 11 7-11 7V5Z"/>,
   pause: <><path d="M8 5v14M16 5v14"/></>,
+  moreHorizontal: <><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></>,
 };
 
 export function Icon({ name, size = 16, strokeWidth = 1.8, ...props }: { name: IconName; size?: number; strokeWidth?: number } & SVGProps<SVGSVGElement>) {
