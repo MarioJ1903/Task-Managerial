@@ -90,3 +90,23 @@
 .rest-chip{background:#f7edf1;color:var(--accent)}
 .progress-ring i{background:var(--surface)}
 .overall-ring{background:conic-gradient(var(--accent) 0 var(--overall-progress),#f3eeec var(--overall-progress) 100%)}
+
+.brand-home{border:0;background:transparent;color:inherit;cursor:pointer;text-align:left}
+.mobile-menu-toggle,.mobile-menu-backdrop{display:none}
+.mobile-menu-toggle{width:34px;height:34px;flex:none;place-items:center;border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--text)}
+@media(max-width:600px){
+ .sidebar{display:flex;inset:0 auto 0 0;width:min(280px,85vw);padding:24px 16px 18px;overflow-y:auto;overscroll-behavior:contain;transform:translateX(-105%);transition:transform .22s ease;box-shadow:0 12px 40px #302f3b2b;z-index:5}
+ .sidebar.mobile-open{transform:translateX(0)}
+ .sidebar .brand{width:100%;padding:0 12px 34px}
+ .sidebar .brand>div:nth-child(2){display:block;font-size:inherit}
+ .sidebar .side-label{display:block;font-size:9px}
+ .sidebar .nav-item,.sidebar .nav-item:not(.active),.sidebar .nav-item.active{justify-content:flex-start;padding:10px 12px;font-size:13px}
+ .sidebar .nav-icon{font-size:18px}
+ .sidebar .side-spacer{flex:0 0 18px}
+ .sidebar .user-row{justify-content:flex-start}
+ .sidebar .user-row>div:not(.avatar){display:block;font-size:inherit}
+ .sidebar .user-row>button{display:grid}
+ .mobile-menu-backdrop{display:block;position:fixed;inset:0;z-index:4;border:0;padding:0;background:#302f3b66}
+ .mobile-menu-toggle{display:grid}
+ .mobile-brand.brand-home{display:flex;align-items:center;gap:6px;margin-right:auto;padding:0;font-size:12px}
+}
